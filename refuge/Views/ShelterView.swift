@@ -5,6 +5,8 @@
 
 import SwiftUI
 
+// Page d'accueil de l'application (onglet "Le refuge") : présente l'établissement
+// et permet de rebondir vers l'onglet "Animaux" en touchant la section dédiée.
 struct ShelterView: View {
     @Environment(AppModel.self) private var appModel
 
@@ -64,6 +66,8 @@ struct ShelterView: View {
         .frame(maxWidth: .infinity)
     }
 
+    // Section interactive : toucher cette carte bascule automatiquement l'application
+    // sur l'onglet "Animaux" via appModel.openAnimalsTab().
     private var animalsAccueillisSection: some View {
         Button {
             withAnimation {
@@ -84,6 +88,7 @@ struct ShelterView: View {
     }
 }
 
+// Carte réutilisable pour présenter une section du refuge avec un titre et une icône.
 private struct SectionCard<Content: View>: View {
     let title: String
     let systemImage: String

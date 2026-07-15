@@ -5,10 +5,12 @@
 
 import Foundation
 
+// Statut d'adoption d'un animal : peut être basculé depuis la scène de détails (LongPressGesture).
 enum AdoptionStatus: String {
     case available = "Disponible pour adoption"
     case adopted = "Adopté"
 
+    // Icône SF Symbols associée à chaque statut, utilisée dans les badges de l'interface.
     var symbolName: String {
         switch self {
         case .available: return "pawprint.circle.fill"
@@ -17,19 +19,26 @@ enum AdoptionStatus: String {
     }
 }
 
+// Modèle représentant un animal hébergé par le refuge.
+// C'est une struct : les modifications (bien-être, statut) se font via un Binding
+// vers le tableau partagé dans AppModel, pour que les changements soient conservés
+// quand on revient à la liste puis qu'on rouvre le même animal.
 struct Animal: Identifiable {
     let id = UUID()
     var name: String
     var species: String
     var age: Int
     var imageName: String
-    var wellbeing: Int
+    var wellbeing: Int // Niveau de bien-être, de 0 à 10
     var adoptionStatus: AdoptionStatus
 
+    // Accord singulier/pluriel de "an(s)" selon l'âge.
     var ageDescription: String {
         age > 1 ? "\(age) ans" : "\(age) an"
     }
 
+    // Message affiché dans la scène de détails, qui décrit l'état de bien-être
+    // de l'animal en fonction de son niveau actuel (0 à 10).
     var wellbeingMessage: String {
         switch wellbeing {
         case 0...2:
@@ -47,6 +56,7 @@ struct Animal: Identifiable {
 }
 
 extension Animal {
+    // Les six animaux accueillis par le refuge, affichés dans l'onglet "Animaux".
     static let sampleAnimals: [Animal] = [
         Animal(name: "Rex", species: "Chien", age: 3, imageName: "AnimalDog", wellbeing: 7, adoptionStatus: .available),
         Animal(name: "Luna", species: "Chat", age: 2, imageName: "AnimalCat", wellbeing: 8, adoptionStatus: .available),

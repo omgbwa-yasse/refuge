@@ -5,6 +5,10 @@
 
 import SwiftUI
 
+// Scène de détails d'un animal : image interactive (4 gestes), informations,
+// jauge de bien-être et section explicative des gestes disponibles.
+// @Binding (et non une simple valeur) : les modifications faites ici écrivent
+// directement dans appModel.animals, donc elles sont conservées au retour à la liste.
 struct AnimalDetailView: View {
     @Binding var animal: Animal
 
@@ -31,8 +35,15 @@ struct AnimalDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 
-    // MARK: - Image with gestures
+    // MARK: - Image et gestes
 
+    // Les 4 gestes demandés sont tous appliqués directement sur l'image :
+    // - Tap        : augmente le bien-être (max 10)
+    // - LongPress  : bascule le statut d'adoption
+    // - Drag       : déplace l'image, qui revient à sa place une fois le geste terminé
+    // - Magnification : agrandit/réduit l'image, qui reprend sa taille une fois le geste terminé
+    // Drag et Magnification doivent pouvoir se produire "en même temps" du point de
+    // vue de SwiftUI, d'où l'utilisation de SimultaneousGesture pour les combiner.
     private var animalImage: some View {
         Image(animal.imageName)
             .resizable()
@@ -41,8 +52,8 @@ struct AnimalDetailView: View {
             .frame(height: 260)
             .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
             .shadow(radius: 6)
-            .offset(dragOffset)
-            .scaleEffect(currentMagnification)
+            .offset(dragOffset) // position temporaire pendant le Drag
+            .scaleEffect(currentMagnification) // taille temporaire pendant le Magnification
             .onTapGesture {
                 increaseWellbeing()
             }
@@ -56,6 +67,7 @@ struct AnimalDetailView: View {
                             dragOffset = value.translation
                         }
                         .onEnded { _ in
+                            // Fin du geste : l'image retourne à sa position initiale.
                             withAnimation(.spring()) {
                                 dragOffset = .zero
                             }
@@ -66,6 +78,7 @@ struct AnimalDetailView: View {
                             currentMagnification = value
                         }
                         .onEnded { _ in
+                            // Fin du geste : l'image reprend sa taille initiale.
                             withAnimation(.spring()) {
                                 currentMagnification = 1.0
                             }
@@ -98,8 +111,10 @@ struct AnimalDetailView: View {
         .frame(maxWidth: .infinity)
     }
 
-    // MARK: - Wellbeing
+    // MARK: - Bien-être
 
+    // Affiche le niveau de bien-être (jauge visuelle sur 10) et le message
+    // correspondant (voir Animal.wellbeingMessage).
     private var wellbeingSection: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
@@ -122,6 +137,7 @@ struct AnimalDetailView: View {
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
 
+    // Message qui informe l'utilisateur du résultat de la dernière action effectuée.
     private var interactionMessageView: some View {
         Text(interactionMessage)
             .font(.callout.weight(.medium))
@@ -133,6 +149,7 @@ struct AnimalDetailView: View {
             .animation(.easeInOut, value: interactionMessage)
     }
 
+    // Section "Gestes disponibles" : rappelle les 4 gestes et leur effet.
     private var gestureInfoSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Label("Gestes disponibles", systemImage: "hand.draw.fill")
@@ -149,8 +166,9 @@ struct AnimalDetailView: View {
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
 
-    // MARK: - Actions
+    // MARK: - Actions déclenchées par les gestes
 
+    // TapGesture : augmente le bien-être de 1, jusqu'à un maximum de 10.
     private func increaseWellbeing() {
         guard animal.wellbeing < 10 else {
             interactionMessage = "\(animal.name) est déjà au maximum de bien-être (10/10) !"
@@ -162,6 +180,7 @@ struct AnimalDetailView: View {
         interactionMessage = "Niveau de bien-être augmenté à \(animal.wellbeing)/10 !"
     }
 
+    // LongPressGesture : alterne le statut entre "Disponible pour adoption" et "Adopté".
     private func toggleAdoptionStatus() {
         withAnimation {
             animal.adoptionStatus = animal.adoptionStatus == .available ? .adopted : .available
@@ -170,6 +189,7 @@ struct AnimalDetailView: View {
     }
 }
 
+// Une ligne de la section "Gestes disponibles" (icône + titre + description).
 private struct GestureInfoRow: View {
     let icon: String
     let title: String
@@ -192,6 +212,7 @@ private struct GestureInfoRow: View {
     }
 }
 
+// Représentation visuelle du bien-être : 10 capsules, dont "level" sont colorées.
 private struct WellbeingGaugeView: View {
     let level: Int
 
@@ -205,6 +226,7 @@ private struct WellbeingGaugeView: View {
         }
     }
 
+    // Couleur de la jauge selon le niveau : rouge (faible), orange (moyen), vert (bon).
     private func color(for level: Int) -> Color {
         switch level {
         case 0...3: return .red

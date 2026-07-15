@@ -5,6 +5,7 @@
 
 import Foundation
 
+// Informations statiques du refuge, affichées dans l'onglet "Le refuge".
 struct Shelter {
     var name: String
     var logoImageName: String
@@ -18,6 +19,7 @@ struct Shelter {
 }
 
 extension Shelter {
+    // Les données du refuge présenté par l'application.
     static let current = Shelter(
         name: "Refuge Espoir",
         logoImageName: "ShelterLogo",
