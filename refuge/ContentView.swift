@@ -2,23 +2,32 @@
 //  ContentView.swift
 //  refuge
 //
-//  Created by user295774 on 7/15/26.
-//
 
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(AppModel.self) private var appModel
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        @Bindable var appModel = appModel
+
+        TabView(selection: $appModel.selectedTab) {
+            AnimalListView()
+                .tabItem {
+                    Label("Animaux", systemImage: "pawprint.fill")
+                }
+                .tag(AppTab.animals)
+
+            ShelterView()
+                .tabItem {
+                    Label("Le refuge", systemImage: "house.fill")
+                }
+                .tag(AppTab.shelter)
         }
-        .padding()
     }
 }
 
 #Preview {
     ContentView()
+        .environment(AppModel())
 }
