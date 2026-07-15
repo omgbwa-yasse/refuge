@@ -21,9 +21,9 @@ struct Shelter {
 extension Shelter {
     // Les données du refuge présenté par l'application.
     static let current = Shelter(
-        name: "Refuge Espoir",
+        name: "Refuge Espoir de la Cité",
         logoImageName: "ShelterLogo",
-        shortPresentation: "Depuis 2010, le Refuge Espoir accueille, soigne et trouve des familles aimantes pour les animaux abandonnés ou perdus de la région.",
+        shortPresentation: "Depuis 2010, le Refuge Espoir de la Cité accueille, soigne et trouve des familles aimantes pour les animaux abandonnés ou perdus de la région.",
         mission: "Notre mission est d'offrir un abri sûr à chaque animal dans le besoin, de veiller à son bien-être physique et émotionnel, et de favoriser des adoptions responsables et durables.",
         team: "Une équipe de 8 bénévoles passionnés et 3 soigneurs professionnels s'occupe des animaux tous les jours de l'année, épaulée par notre vétérinaire attitrée, Dre Tremblay.",
         openingHours: "Lundi au vendredi : 9h00 – 17h00\nSamedi : 10h00 – 15h00\nDimanche : Fermé",
