@@ -48,7 +48,7 @@ struct ShelterView: View {
                 }
                 .padding()
             }
-            .navigationTitle(shelter.name)
+            .navigationBarHidden(true)
         }
     }
 
