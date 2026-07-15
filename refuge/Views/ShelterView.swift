@@ -43,6 +43,8 @@ struct ShelterView: View {
                             Label(shelter.address, systemImage: "mappin.and.ellipse")
                         }
                     }
+
+                    credits
                 }
                 .padding()
             }
@@ -85,6 +87,15 @@ struct ShelterView: View {
             }
         }
         .buttonStyle(.plain)
+    }
+
+    // Crédit de l'équipe ayant réalisé l'application.
+    private var credits: some View {
+        Text("Réalisé par : Ester Nduwimana, Tinhinane Tahakourt et Omgbwa Yasse")
+            .font(.footnote)
+            .foregroundStyle(.secondary)
+            .frame(maxWidth: .infinity, alignment: .center)
+            .multilineTextAlignment(.center)
     }
 }
 
