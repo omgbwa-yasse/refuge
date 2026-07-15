@@ -95,7 +95,7 @@ struct ShelterView: View {
             Text("Réalisé par : ")
             + Text("Ester Nduwimana, Tinhinane Tahakourt et Omgbwa Yasse").bold()
         )
-        .font(.footnote)
+        .font(.title3)
         .foregroundStyle(.secondary)
         .frame(maxWidth: .infinity, alignment: .center)
         .multilineTextAlignment(.center)
