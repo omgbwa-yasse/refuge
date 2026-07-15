@@ -89,13 +89,16 @@ struct ShelterView: View {
         .buttonStyle(.plain)
     }
 
-    // Crédit de l'équipe ayant réalisé l'application.
+    // Crédit de l'équipe ayant réalisé l'application (noms en gras).
     private var credits: some View {
-        Text("Réalisé par : Ester Nduwimana, Tinhinane Tahakourt et Omgbwa Yasse")
-            .font(.footnote)
-            .foregroundStyle(.secondary)
-            .frame(maxWidth: .infinity, alignment: .center)
-            .multilineTextAlignment(.center)
+        (
+            Text("Réalisé par : ")
+            + Text("Ester Nduwimana, Tinhinane Tahakourt et Omgbwa Yasse").bold()
+        )
+        .font(.footnote)
+        .foregroundStyle(.secondary)
+        .frame(maxWidth: .infinity, alignment: .center)
+        .multilineTextAlignment(.center)
     }
 }
 
